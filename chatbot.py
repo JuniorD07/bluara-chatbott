@@ -1,12 +1,13 @@
 import openai
 import json
+import os
 from flask import Flask, request, jsonify
 from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__)
 
 # Configuração da API OpenAI
-OPENAI_API_KEY = "SUA_CHAVE_OPENAI"
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 openai.api_key = OPENAI_API_KEY
 
 # Função para processar mensagens
@@ -17,6 +18,11 @@ def chatbot_response(message):
                   {"role": "user", "content": message}]
     )
     return response["choices"][0]["message"]["content"]
+
+# Rota principal para testar no navegador
+@app.route("/", methods=["GET"])
+def home():
+    return "Chatbot Bluara Modas está rodando!", 200
 
 # Rota para integração com WhatsApp (Twilio)
 @app.route("/whatsapp", methods=["POST"])
@@ -42,4 +48,5 @@ def site_chatbot():
     return jsonify({"response": bot_reply})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 10000))  # Define a porta exigida pelo Render
+    app.run(host="0.0.0.0", port=port, debug=True)
