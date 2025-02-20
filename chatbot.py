@@ -22,7 +22,7 @@ def chatbot_response(message):
 # Rota principal para testar no navegador
 @app.route("/", methods=["GET"])
 def home():
-    return "Chatbot Bluara Modas está rodando!", 200
+    return "🚀 Chatbot Bluara Modas atualizado e rodando!", 200
 
 # Rota para integração com WhatsApp (Twilio)
 @app.route("/whatsapp", methods=["POST"])
